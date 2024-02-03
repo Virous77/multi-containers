@@ -13,8 +13,5 @@ export const pgConfig = {
   database: process.env.PG_DATABASE,
   password: String(process.env.PG_PASSWORD),
   port: process.env.PG_PORT,
-  ssl:
-    process.env.NODE_ENV !== "production"
-      ? false
-      : { rejectUnauthorized: false },
+  ssl: false,
 };
