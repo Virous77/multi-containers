@@ -31,6 +31,13 @@ spec:
               value: "postgres"
             - name: PG_PORT
               value: "5432"
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
 
 ---
 apiVersion: v1
@@ -44,3 +51,17 @@ spec:
   ports:
     - port: 4000
       targetPort: 4000
+
+---
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: hpa-server-deployment
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: server-deployment
+  minReplicas: 1
+  maxReplicas: 4
+  targetCPUUtilizationPercentage: 50

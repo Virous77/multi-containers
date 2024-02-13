@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: main-deployment
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: main
@@ -21,3 +21,24 @@ spec:
               value: redis-cluster-ip-service
             - name: REDIS_PORT
               value: "6379"
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
+
+---
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: hpa-main-deployment
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: main-deployment
+  minReplicas: 1
+  maxReplicas: 4
+  targetCPUUtilizationPercentage: 50

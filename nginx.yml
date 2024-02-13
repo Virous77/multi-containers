@@ -16,6 +16,13 @@ spec:
         - name: nginx-app
           image: reetesh-nginx
           imagePullPolicy: Never
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
 
 ---
 apiVersion: v1
